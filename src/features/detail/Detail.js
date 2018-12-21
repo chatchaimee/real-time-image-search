@@ -29,12 +29,8 @@ const DetailStyle = styled.div`
 `;
 
 class Detail extends Component {
-  componentWillMount() {
-    const id = this.props.match.params.id;
-
-    if (id) {
-      this.props.getImageDetail(id);
-    }
+  componentDidMount() {
+    this.props.getImageDetail();
   }
 
   render() {
