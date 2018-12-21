@@ -1,11 +1,14 @@
 import React, { Component } from "react";
-import axios from "axios";
+import { connect } from "react-redux";
+import { pick } from "lodash";
 import styled from "styled-components";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
+
+import { getImageDetail } from "../../redux";
 
 const DetailStyle = styled.div`
   align-items: center;
@@ -26,33 +29,20 @@ const DetailStyle = styled.div`
 `;
 
 class Detail extends Component {
-  state = {
-    imageDetail: [],
-    isLoading: true
-  };
+  componentWillMount() {
+    const id = this.props.match.params.id;
 
-  componentDidMount() {
-    this.getImageDetail();
+    if (id) {
+      this.props.getImageDetail(id);
+    }
   }
 
-  getImageDetail = async () => {
-    const images = await axios.get(
-      "http://www.mocky.io/v2/5c1c9c133100001000104101"
-    );
-
-    if (!!images) {
-      this.setState({
-        imageDetail: images.data,
-        isLoading: false
-      });
-    }
-  };
-
   render() {
-    const { imageDetail, isLoading } = this.state;
+    const { imageDetail, isLoading, isError } = this.props;
 
     return (
       <DetailStyle>
+        {isError && <p>Error!</p>}
         {!isLoading && (
           <div className="card-container">
             <Card className="card">
@@ -72,4 +62,15 @@ class Detail extends Component {
   }
 }
 
-export default Detail;
+const mapStateToProps = state => {
+  return pick(state, ["isLoading", "imageDetail", "isError"]);
+};
+
+const mapDispatchToProps = {
+  getImageDetail
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Detail);
