@@ -34,12 +34,16 @@ class Detail extends Component {
   }
 
   render() {
-    const { imageDetail, isLoading, isError } = this.props;
+    const {
+      imageDetail,
+      isLoadImageDetailError,
+      isIamgeDetailLoading
+    } = this.props;
 
     return (
       <DetailStyle>
-        {isError && <p>Error!</p>}
-        {!isLoading && (
+        {isLoadImageDetailError && <p>Error!</p>}
+        {!isIamgeDetailLoading && (
           <div className="card-container">
             <Card className="card">
               <CardActionArea>
@@ -59,7 +63,11 @@ class Detail extends Component {
 }
 
 const mapStateToProps = state => {
-  return pick(state, ["isLoading", "imageDetail", "isError"]);
+  return pick(state, [
+    "imageDetail",
+    "isLoadImageDetailError",
+    "isIamgeDetailLoading"
+  ]);
 };
 
 const mapDispatchToProps = {

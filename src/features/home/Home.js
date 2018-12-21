@@ -11,7 +11,7 @@ import IconButton from "@material-ui/core/IconButton";
 import InfoIcon from "@material-ui/icons/Info";
 
 import withRoot from "../../withRoot";
-import { getImage } from "../../redux";
+import { getImageList } from "../../redux";
 
 const HomeStyle = styled.div`
   text-align: center;
@@ -38,7 +38,7 @@ const HomeStyle = styled.div`
 
 class Home extends Component {
   handleClick = () => {
-    this.props.getImage();
+    this.props.getImageList();
   };
 
   handleActionClick = id => {
@@ -46,7 +46,7 @@ class Home extends Component {
   };
 
   render() {
-    const { images, isLoading, isError } = this.props;
+    const { imageLists, isLoadImageListError, isImageListLoading } = this.props;
 
     return (
       <HomeStyle>
@@ -65,12 +65,12 @@ class Home extends Component {
           Search
         </Button>
 
-        {isError && <p>Error!</p>}
-        {!isLoading && (
+        {isLoadImageListError && <p>Error!</p>}
+        {!isImageListLoading && (
           <div className="grid">
             <GridList cellHeight={180} className="grid-list">
-              {images.results !== undefined &&
-                images.results.map(image => (
+              {imageLists !== undefined &&
+                imageLists.results.map(image => (
                   <GridListTile key={image.id}>
                     <img src={image.urls.thumb} alt={image.description} />
                     <GridListTileBar
@@ -96,11 +96,15 @@ class Home extends Component {
 }
 
 const mapStateToProps = state => {
-  return pick(state, ["isLoading", "images", "isError"]);
+  return pick(state, [
+    "imageLists",
+    "isLoadImageListError",
+    "isImageListLoading"
+  ]);
 };
 
 const mapDispatchToProps = {
-  getImage
+  getImageList
 };
 
 export default connect(

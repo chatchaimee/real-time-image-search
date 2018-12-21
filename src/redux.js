@@ -1,48 +1,50 @@
 import axios from "axios";
 
 const initialState = {
-  images: [],
+  imageLists: [],
+  isLoadImageListError: false,
+  isImageListLoading: true,
   imageDetail: [],
-  isError: false,
-  isLoading: true
+  isLoadImageDetailError: false,
+  isIamgeDetailLoading: true
 };
 
 // Reducer
 export default (state = initialState, action) => {
   switch (action.type) {
-    case "GET_IMAGE_PENDING":
+    case "GET_IMAGE_LIST_PENDING":
       return {
         ...state,
-        isError: false,
-        isLoading: true
+        isLoadImageListError: false,
+        isImageListLoading: true
       };
-    case "GET_IMAGE_FULFILLED":
+    case "GET_IMAGE_LIST_FULFILLED":
       return {
         ...state,
-        isLoading: false,
-        images: action.payload.data
+        isImageListLoading: false,
+        imageLists: action.payload.data
       };
-    case "GET_IMAGE_REJECTED":
+    case "GET_IMAGE_LIST_REJECTED":
       return {
         ...state,
-        isError: true
+        isLoadImageListError: true
       };
     case "GET_IMAGE_DETAIL_PENDING":
       return {
         ...state,
-        isError: false,
-        isLoading: true
+        isLoadImageDetailError: false,
+        isIamgeDetailLoading: true
       };
     case "GET_IMAGE_DETAIL_FULFILLED":
       return {
         ...state,
-        isLoading: false,
+        isIamgeDetailLoading: false,
         imageDetail: action.payload.data
       };
     case "GET_IMAGE_DETAIL_REJECTED":
       return {
         ...state,
-        isError: true
+        isLoadImageDetailError: true
       };
     default:
       return state;
@@ -50,9 +52,9 @@ export default (state = initialState, action) => {
 };
 
 // Action creator
-export const getImage = () => {
+export const getImageList = () => {
   return {
-    type: "GET_IMAGE",
+    type: "GET_IMAGE_LIST",
     payload: axios.get("http://www.mocky.io/v2/5c1c9bc23100006000104100")
   };
 };
